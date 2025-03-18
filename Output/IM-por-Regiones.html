@@ -1738,11 +1738,62 @@ color: #20218a;
 </style>
 <div id="objetivo" class="section level2">
 <h2>Objetivo</h2>
+<p>El método DP2 se distingue por su propiedad de cardinalidad, que
+permite realizar análisis cuantitativos precisos y significativos entre
+diferentes valores del índice. Esta característica es fundamental ya que
+facilita no solo la comparación directa entre distintas unidades
+geográficas manteniendo su interpretación, sino que también permite
+realizar operaciones de agregación como sumas y promedios ponderados. A
+diferencia de otros métodos como los índices ordinales o el Análisis de
+Componentes Principales (<code>ACP</code>), el <code>DP2</code> mantiene
+la distancia relativa entre unidades, lo que resulta especialmente útil
+para calcular índices regionales mediante promedios ponderados sin
+perder su significado interpretativo.</p>
 </div>
 <div id="índice-de-marginación" class="section level2">
 <h2>Índice de Marginación</h2>
+<p>El índice de marginación es una herramienta estadística fundamental
+para comprender y abordar las desigualdades sociales y económicas en un
+territorio determinado. Este índice proporciona una medida cuantitativa
+del grado en que una población o área geográfica se encuentra excluida
+del acceso a bienes y servicios esenciales para el desarrollo
+humano.</p>
+<p><strong>¿Qué mide el índice de marginación?</strong></p>
+<p>El índice de marginación no se limita a medir la pobreza económica,
+sino que abarca un espectro más amplio de dimensiones que incluyen:</p>
+<ul>
+<li><strong>Educación:</strong> Nivel de alfabetización, acceso a la
+educación básica y superior.</li>
+<li><strong>Vivienda:</strong> Condiciones de la vivienda, acceso a
+servicios básicos como agua potable y saneamiento.</li>
+<li><strong>Ingresos:</strong> Nivel de ingresos y distribución de la
+riqueza.</li>
+<li><strong>Distribución de la población:</strong> grado de urbanización
+y acceso a servicios de salud.</li>
+</ul>
+<p><strong>Importancia del índice de marginación</strong></p>
+<ul>
+<li><strong>Identificación de áreas prioritarias:</strong> Permite
+identificar las regiones y comunidades que requieren mayor atención y
+recursos para superar las condiciones de marginación.</li>
+<li><strong>Diseño de políticas públicas:</strong> Facilita la
+formulación de políticas y programas específicos para reducir las
+desigualdades y promover el desarrollo inclusivo.</li>
+<li><strong>Monitoreo y evaluación:</strong> Permite evaluar el impacto
+de las intervenciones y medir el progreso en la reducción de la
+marginación a lo largo del tiempo.</li>
+<li><strong>Concientización:</strong> El índice de marginación ayuda a
+visibilizar las disparidades existentes y a generar conciencia sobre la
+necesidad de acciones para promover la equidad social.</li>
+</ul>
+<p><strong>Metodología</strong></p>
+<p>La construcción del índice de marginación implica la selección de
+indicadores relevantes, la ponderación de cada dimensión y la aplicación
+de técnicas estadísticas para obtener una medida sintética. El método de
+Distancia de Pena Trapero (DP2) es uno de los métodos utilizados para
+realizar este tipo de calculos.</p>
 <div id="método-de-distancias-ponderadas-dp_2" class="section level3">
-<h3>Método de Distancias Ponderadas (DP_2)</h3>
+<h3>Método de Distancias Ponderadas (<span class="math inline">\(DP_2\)</span>)</h3>
 <p>El <strong>Método de Distancia DP2</strong> de <strong>José Bernardo
 Peña Trapero (1977)</strong> es una herramienta poderosa para construir
 <strong>índices sintéticos de marginación, pobreza o
@@ -1798,9 +1849,76 @@ siguientes propiedades: no negatividad, homogeneidad, conmutatividad,
 desigualdad triangular, existencia y determinación, monotonía, unicidad,
 transitividad, no duplicidad de información, invariancia al cambio de
 origen y/o de escala en las unidades y exhaustividad.</p>
+<div id="ventajas-del-método-dp_2" class="section level4">
+<h4>Ventajas del Método <span class="math inline">\(DP_2\)</span></h4>
+<ul>
+<li>Elimina la necesidad de normalización previa.<br />
+</li>
+<li>Pondera las variables en función de su dispersión y
+redundancia.<br />
+</li>
+<li>Evita el sesgo por multicolinealidad** al reducir el peso de
+variables correlacionadas.<br />
+</li>
+<li>No requiere suponer normalidad de los datos.</li>
+</ul>
+</div>
+</div>
+<div id="propiedad-de-la-cardinalidad" class="section level3">
+<h3>Propiedad de la Cardinalidad</h3>
+<p>La <strong>propiedad de cardinalidad</strong> implica que el índice
+<strong>preserva relaciones de magnitud y permite comparaciones
+aritméticas</strong>, es decir:</p>
+<ul>
+<li><strong>Diferencias entre valores de DP2 tienen
+significado</strong>: Si un estado tiene <span class="math inline">\(DP_{2i} = 1.5\)</span> y otro <span class="math inline">\(DP_{2j} = 0.8\)</span>, podemos decir que el
+primero tiene mayor marginación que el segundo.<br />
+</li>
+<li><strong>Permite operaciones de agregación</strong> como sumas,
+promedios ponderados, etc.<br />
+</li>
+<li><strong>Se puede comparar directamente entre unidades
+geográficas</strong> (municipios, estados, regiones) sin pérdida de
+interpretación.<br />
+</li>
+<li>Si el índice <span class="math inline">\(DP_2\)</span> fuera
+simplemente <strong>ordinal</strong> (como un ranking o una
+clasificación cualitativa), <strong>no se podría promediar ni
+sumar</strong> los valores estatales para obtener un valor
+regional.</li>
+</ul>
+<p><strong>Índice sintéticos ordinales</strong></p>
+<p>Otros índices sintéticos, como los construidos mediante
+<strong>Análisis de Componentes Principales (ACP)</strong> o escalas
+cualitativas, <strong>no necesariamente tienen cardinalidad</strong>.
+Por ejemplo:<br />
+- <strong>Índices ordinales</strong> solo indican un orden, pero no
+diferencias cuantitativas entre niveles (ejemplo: “baja”, “media”,
+“alta” marginación).<br />
+- <strong>ACP puede generar índices normalizados sin interpretación
+directa</strong>, lo que dificulta operaciones de agregación.</p>
+<p>En cambio, <strong>DP2 conserva la distancia relativa entre
+unidades</strong>, permitiendo calcular un índice regional mediante un
+<strong>promedio ponderado</strong> sin perder significado.</p>
 </div>
 <div id="nivel-regional" class="section level3">
 <h3>Nivel Regional</h3>
+<p>Si agrupamos los estados en <strong><span class="math inline">\(k\)</span> regiones</strong> (por ejemplo, <span class="math inline">\(k = 5\)</span>), una forma adecuada de calcular el
+índice DP2 regional es:</p>
+<p><span class="math display">\[
+    DP_{2r} = \frac{\sum_{i \in R} DP_{2i}}{N_r}
+    \]</span></p>
+<p>donde:<br />
+- <span class="math inline">\(DP_{2r}\)</span> es el índice DP2 de la
+<strong>región <span class="math inline">\(r\)</span></strong>.<br />
+- <span class="math inline">\(DP_{2i}\)</span> es el índice DP2 del
+<strong>estado o municipio <span class="math inline">\(i\)</span> dentro
+de la región <span class="math inline">\(r\)</span></strong>.<br />
+- <span class="math inline">\(w_i\)</span> es el <strong>peso</strong>
+del estado <span class="math inline">\(i\)</span> en la región <span class="math inline">\(r\)</span> (por ejemplo, la población del estado o
+su PIB).<br />
+- <span class="math inline">\(N_r\)</span> es el número de estados en la
+región <span class="math inline">\(r\)</span>.</p>
 <div id="shapefile" class="section level4">
 <h4>Shapefile</h4>
 <p>La función <code>readOGR</code> del paquete <code>rgdal</code>,
@@ -1820,6 +1938,7 @@ extensión <code>.shp</code>.</p>
 integrada la división de el área geoestadística municipal
 <code>agem</code> y el área geoestadística estatal
 <code>agee</code>.</p>
+<p><strong>área geoestadística estatal <code>agee</code></strong></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>shape_estados <span class="ot">&lt;-</span> <span class="fu">readOGR</span>(<span class="at">dsn =</span><span class="st">&quot;D:/MGN/MGN 2020/MGN 2020/conjunto_de_datos&quot;</span>, </span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>                             <span class="at">layer =</span> <span class="st">&quot;00ent&quot;</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>                              <span class="at">encoding =</span> <span class="st">&quot;UTF-8&quot;</span>,</span>

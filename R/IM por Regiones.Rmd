@@ -127,11 +127,37 @@ require(tidyverse)
 require(unikn)          # Paleta de colores
 ```
 
-## Objetivo 
+## Objetivo  
 
-## Índice de Marginación   
+El método DP2 se distingue por su propiedad de cardinalidad, que permite realizar análisis cuantitativos precisos y significativos entre diferentes valores del índice. Esta característica es fundamental ya que facilita no solo la comparación directa entre distintas unidades geográficas manteniendo su interpretación, sino que también permite realizar operaciones de agregación como sumas y promedios ponderados. A diferencia de otros métodos como los índices ordinales o el Análisis de Componentes Principales (`ACP`), el `DP2` mantiene la distancia relativa entre unidades, lo que resulta especialmente útil para calcular índices regionales mediante promedios ponderados sin perder su significado interpretativo. 
 
-### Método de Distancias Ponderadas (DP_2) 
+## Índice de Marginación    
+
+El índice de marginación es una herramienta estadística fundamental para comprender y abordar las desigualdades sociales y económicas en un territorio determinado. Este índice proporciona una medida cuantitativa del grado en que una población o área geográfica se encuentra excluida del acceso a bienes y servicios esenciales para el desarrollo humano.
+
+**¿Qué mide el índice de marginación?**
+  
+El índice de marginación no se limita a medir la pobreza económica, sino que abarca un espectro más amplio de dimensiones que incluyen:
+  
+* **Educación:** Nivel de alfabetización, acceso a la educación básica y superior.
+* **Vivienda:** Condiciones de la vivienda, acceso a servicios básicos como agua potable y saneamiento.
+* **Ingresos:** Nivel de ingresos y distribución de la riqueza.
+* **Distribución de la población:** grado de urbanización y acceso a servicios de salud.
+
+
+**Importancia del índice de marginación**
+  
+* **Identificación de áreas prioritarias:** Permite identificar las regiones y comunidades que requieren mayor atención y recursos para superar las condiciones de marginación.
+* **Diseño de políticas públicas:** Facilita la formulación de políticas y programas específicos para reducir las desigualdades y promover el desarrollo inclusivo.
+* **Monitoreo y evaluación:** Permite evaluar el impacto de las intervenciones y medir el progreso en la reducción de la marginación a lo largo del tiempo.
+* **Concientización:** El índice de marginación ayuda a visibilizar las disparidades existentes y a generar conciencia sobre la necesidad de acciones para promover la equidad social.
+
+**Metodología**
+  
+La construcción del índice de marginación implica la selección de indicadores relevantes, la ponderación de cada dimensión y la aplicación de técnicas estadísticas para obtener una medida sintética. El método de Distancia de Pena Trapero (DP2) es uno de los métodos utilizados para realizar este tipo de calculos.
+
+
+### Método de Distancias Ponderadas ($DP_2$) 
 
 
 El **Método de Distancia DP2** de **José Bernardo Peña Trapero (1977)** es una herramienta poderosa para construir **índices sintéticos de marginación, pobreza o desarrollo**. Su fortaleza radica en la **ponderación objetiva de variables** y la **reducción de redundancia** mediante \( R^2 \), lo que lo hace más robusto que otros métodos como el Análisis de Componentes Principales (ACP).
@@ -170,17 +196,55 @@ donde \( X_i \) es el valor observado y \( X_i^* \) es el óptimo.
 
 El $DP_{2}$ cumple con las siguientes propiedades: no negatividad, homogeneidad, conmutatividad, desigualdad triangular, existencia y determinación, monotonía, unicidad, transitividad, no duplicidad de información, invariancia al cambio de origen y/o de escala en las unidades y exhaustividad.      
 
+#### Ventajas del Método $DP_2$
+
+- Elimina la necesidad de normalización previa.  
+- Pondera las variables en función de su dispersión y redundancia.  
+- Evita el sesgo por multicolinealidad** al reducir el peso de variables correlacionadas.  
+- No requiere suponer normalidad de los datos.   
+
+### Propiedad de la Cardinalidad 
+
+La **propiedad de cardinalidad** implica que el índice **preserva relaciones de magnitud y permite comparaciones aritméticas**, es decir:    
+
+
+  - **Diferencias entre valores de DP2 tienen significado**: Si un estado tiene \( DP_{2i} = 1.5 \) y otro \( DP_{2j} = 0.8 \), podemos decir que el primero tiene mayor marginación que el segundo.  
+- **Permite operaciones de agregación** como sumas, promedios ponderados, etc.  
+- **Se puede comparar directamente entre unidades geográficas** (municipios, estados, regiones) sin pérdida de interpretación.  
+- Si el índice $DP_2$ fuera simplemente **ordinal** (como un ranking o una clasificación cualitativa), **no se podría promediar ni sumar** los valores estatales para obtener un valor regional.  
+
+**Índice sintéticos ordinales** 
+
+Otros índices sintéticos, como los construidos mediante **Análisis de Componentes Principales (ACP)** o escalas cualitativas, **no necesariamente tienen cardinalidad**. Por ejemplo:  
+  - **Índices ordinales** solo indican un orden, pero no diferencias cuantitativas entre niveles (ejemplo: "baja", "media", "alta" marginación).  
+- **ACP puede generar índices normalizados sin interpretación directa**, lo que dificulta operaciones de agregación.  
+
+En cambio, **DP2 conserva la distancia relativa entre unidades**, permitiendo calcular un índice regional mediante un **promedio ponderado** sin perder significado.  
+
 
 ### Nivel Regional 
 
+Si agrupamos los estados en **\( k \) regiones** (por ejemplo, \( k = 5 \)), una forma adecuada de calcular el índice DP2 regional es:
 
+ \[
+    DP_{2r} = \frac{\sum_{i \in R} DP_{2i}}{N_r}
+    \]
+    
+donde:  
+- \( DP_{2r} \) es el índice DP2 de la **región \( r \)**.  
+- \( DP_{2i} \) es el índice DP2 del **estado o municipio \( i \) dentro de la región \( r \)**.  
+- \( w_i \) es el **peso** del estado \( i \) en la región \( r \) (por ejemplo, la población del estado o su PIB).  
+- \( N_r \) es el número de estados en la región \( r \).  
 
 #### Shapefile
 
 La función `readOGR` del paquete `rgdal`, extrae automáticamente la información utilizada por otros paquetes `SIG` de código abierto como QGIS y permite a R manejar una gama más amplia de formatos de datos espaciales. Esta función lee datos `OGR` y datos vectoriales, pero solamente permite manejar capas con características geométricas (no mezcla puntos, líneas o polígonos en una sola capa) y a su vez establecerá un sistema de referencia espacial si la capa tiene dichos metadatos.\
 Para leer un archivo `shapefile`, se establecen los siguientes argumentos, como `dsn`, en donde se indica el directorio que contiene los shapes y `layer` que es el nombre explícito de la capa a trabajar y dichas capas deben de ir sin la extensión `.shp`.
 
-A continuación, se lee el archivo .shp que contiene de manera integrada la división de el área geoestadística municipal `agem` y el área geoestadística estatal `agee`.
+A continuación, se lee el archivo .shp que contiene de manera integrada la división de el área geoestadística municipal `agem` y el área geoestadística estatal `agee`. 
+
+
+**área geoestadística estatal `agee`**   
 
 ```{r,results=FALSE,class.source = "fold-show"}
 shape_estados <- readOGR(dsn ="D:/MGN/MGN 2020/MGN 2020/conjunto_de_datos", 
