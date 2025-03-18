@@ -207,7 +207,6 @@ El $DP_{2}$ cumple con las siguientes propiedades: no negatividad, homogeneidad,
 
 La **propiedad de cardinalidad** implica que el índice **preserva relaciones de magnitud y permite comparaciones aritméticas**, es decir:    
 
-
   - **Diferencias entre valores de DP2 tienen significado**: Si un estado tiene \( DP_{2i} = 1.5 \) y otro \( DP_{2j} = 0.8 \), podemos decir que el primero tiene mayor marginación que el segundo.  
 - **Permite operaciones de agregación** como sumas, promedios ponderados, etc.  
 - **Se puede comparar directamente entre unidades geográficas** (municipios, estados, regiones) sin pérdida de interpretación.  
@@ -234,9 +233,27 @@ donde:
 - \( DP_{2r} \) es el índice DP2 de la **región \( r \)**.  
 - \( DP_{2i} \) es el índice DP2 del **estado o municipio \( i \) dentro de la región \( r \)**.  
 - \( w_i \) es el **peso** del estado \( i \) en la región \( r \) (por ejemplo, la población del estado o su PIB).  
-- \( N_r \) es el número de estados en la región \( r \).  
+- \( N_r \) es el número de estados en la región \( r \).   
 
-#### Shapefile
+```{r, echo = FALSE}
+tabla <- read.xlsx(paste0(here::here(), "/Bases/Regiones.xlsx")) %>% 
+          mutate(across(everything(), ~replace_na(.x, "")))
+
+tabla %>%
+ kable(align = "c",
+       caption = c("Tabla: Regiones del México.")) %>%
+  kable_styling(position = "center",
+                 bootstrap_options = c("condensed", "responsive", "bordered", "hover"),
+                 font_size = 10) %>%
+   kable_classic(full_width = F, html_font = "Montserrat") %>%
+   collapse_rows(columns = 1, valign = "middle") %>%
+    row_spec(0, color = "#031a3f",background = "#09C2BC", bold = TRUE) %>%
+     gsub("font-size: initial !important;", "font-size: 9pt !important;", .) %>%
+      gsub("text-align: initial !important;", "text-align: justify !important;", .)
+```
+
+
+### Shapefile
 
 La función `readOGR` del paquete `rgdal`, extrae automáticamente la información utilizada por otros paquetes `SIG` de código abierto como QGIS y permite a R manejar una gama más amplia de formatos de datos espaciales. Esta función lee datos `OGR` y datos vectoriales, pero solamente permite manejar capas con características geométricas (no mezcla puntos, líneas o polígonos en una sola capa) y a su vez establecerá un sistema de referencia espacial si la capa tiene dichos metadatos.\
 Para leer un archivo `shapefile`, se establecen los siguientes argumentos, como `dsn`, en donde se indica el directorio que contiene los shapes y `layer` que es el nombre explícito de la capa a trabajar y dichas capas deben de ir sin la extensión `.shp`.
@@ -244,7 +261,7 @@ Para leer un archivo `shapefile`, se establecen los siguientes argumentos, como 
 A continuación, se lee el archivo .shp que contiene de manera integrada la división de el área geoestadística municipal `agem` y el área geoestadística estatal `agee`. 
 
 
-**área geoestadística estatal `agee`**   
+**Área geoestadística estatal `agee`**   
 
 ```{r,results=FALSE,class.source = "fold-show"}
 shape_estados <- readOGR(dsn ="D:/MGN/MGN 2020/MGN 2020/conjunto_de_datos", 
@@ -266,3 +283,5 @@ La función `rename()` del paquete `dplyr` permite cambiar el nombre de la colum
 shape_municipios@data <- shape_municipios@data %>%
                           rename("CVE_GEO" = "CVEGEO")
 ```
+
+
