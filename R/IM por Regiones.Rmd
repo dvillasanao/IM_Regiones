@@ -1,0 +1,204 @@
+---
+title: "Índice de Marginación a nivel Regional"
+subtitle: "Utilizando el método de DP2"
+author: "Diana Villasana Ocampo"
+knit: (function(inputFile, encoding) {
+       rmarkdown::render(inputFile, encoding = encoding, output_dir = "../Output/")
+  })
+output:
+   html_document:
+      code_folding: hide
+      highlight: tango
+      theme: flatly
+      toc: true
+      toc_depth: 3
+      toc_float:
+        collapsed: yes
+---
+
+```{=html}
+<style type="text/css">
+body {
+text-align: justify;
+font-style: normal;
+font-family: "Montserrat";
+font-size: 12px
+}
+h1.title {
+  font-size: 40px;
+  color: #000D3B;
+}
+h1 {
+  color: #B6854D;
+}
+h2 {
+  color: #172984;
+}
+h3 {
+  color: #172984;
+}
+</style>
+```
+
+```{=html}
+<style>
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #1C3BA4
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li>a:focus {
+    color: #ffffff;
+    background-color: #09C2BC
+}
+</style>
+```
+
+```{=html}
+<style>
+.tile1-text {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #0A6A87;
+    list-style: none;
+}
+.top1-tiles a:nth-of-type(1):hover, .top-tiles1 a:nth-of-type(1):focus{
+    color: #ffffff;
+    background: #0A6A87
+}
+</style>
+```
+
+```{=html}
+<style>
+.tile2-text {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #0A6CC8;
+    list-style: none;
+}
+.top2-tiles a:nth-of-type(1):hover, .top2-tiles a:nth-of-type(1):focus{
+    color: #ffffff;
+    background: #0A6CC8
+}
+</style>
+```
+
+```{=html}
+<style>
+.math {
+  font-size: 11px;
+  color: #20218a;
+}
+</style>
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE, 
+                      cache.lazy = FALSE, class.source = "fold-show")
+knitr::opts_knit$set(root.dir = here::here())
+setwd(here::here())
+```
+
+```{r,echo=FALSE, eval=FALSE}
+rm(list = ls())
+```
+
+```{r, echo = FALSE, results=FALSE}
+# Paquetes que se usaron en el documento 
+require(dplyr)          #A Grammar of Data Manipulation 
+require(ggplot2)        # Generar gráficos ggplot y la geometría de un mapa
+require(RColorBrewer)
+require(ggspatial)
+require(ggpubr)
+require(knitr)
+require(kableExtra)
+require(openxlsx)
+require(readxl)
+require(rgdal)          #Para importar shapefiles. 
+require(sp)             # Classes and Methos for Spatial Data
+library(spdep)    # Índice de Moran 
+require(spdplyr)        #Data manipulation verbs for the sptial classes
+require(tidyverse) 
+require(unikn)          # Paleta de colores
+```
+
+## Objetivo 
+
+## Índice de Marginación   
+
+### Método de Distancias Ponderadas (DP_2) 
+
+
+El **Método de Distancia DP2** de **José Bernardo Peña Trapero (1977)** es una herramienta poderosa para construir **índices sintéticos de marginación, pobreza o desarrollo**. Su fortaleza radica en la **ponderación objetiva de variables** y la **reducción de redundancia** mediante \( R^2 \), lo que lo hace más robusto que otros métodos como el Análisis de Componentes Principales (ACP).
+   
+
+**Definición**
+
+Sean:   
+
+$\:\:\circ\:r$, el número de entidades o municipios;  
+$\:\:\circ\:n$, el número de variables;  
+$\:\:\circ\:x_{ij}$, el valor de la variable j en la entidad o municipio$i$;  
+$\:\:\circ\:\sigma_{j}$, La Desviación Típica de la variable $j$;   
+$\:\:\circ\:R^{2}_{i,i-1,...,1}$ el Coeficiente de Determinación en la Regresión de $X_{i}$ sobre $X_{i-1},X_{i-2},...,X_{1}$. 
+
+Se define la $Distancia-P_{2}$ de la forma:    
+
+\begin{align}
+DP_{2}=\sum^{n}_{i=1}\frac{d_{i}}{\sigma_{i}}(1-R^{2}_{i,i-1,...,1})\:\:;\;\;con \:\:R^{2}_{1}=0
+\end{align}
+
+Donde:     
+
+- \( DP_{2} \) es el índice para la unidad analizada.   
+- \( d_i \) es la distancia entre el valor observado de la variable \( i \) y su referencia óptima (máximo o mínimo según la naturaleza de la variable):  
+  
+  \[
+    d_i = X_i - X_i^*
+      \]
+
+donde \( X_i \) es el valor observado y \( X_i^* \) es el óptimo.  
+- \( \sigma_i \) es la desviación estándar de la variable \( i \), utilizada para normalizar las diferencias.  
+- \( R^2_{i, i-1, ..., 1} \) es el coeficiente de determinación de la regresión de la variable \( i \) sobre las variables anteriores (\( i-1, i-2, ..., 1 \)), lo que mide su redundancia.  
+- \( R^2_1 = 0 \) por definición, ya que la primera variable no tiene otras previas con las cuales pueda estar correlacionada.  
+
+
+El $DP_{2}$ cumple con las siguientes propiedades: no negatividad, homogeneidad, conmutatividad, desigualdad triangular, existencia y determinación, monotonía, unicidad, transitividad, no duplicidad de información, invariancia al cambio de origen y/o de escala en las unidades y exhaustividad.      
+
+
+### Nivel Regional 
+
+
+
+#### Shapefile
+
+La función `readOGR` del paquete `rgdal`, extrae automáticamente la información utilizada por otros paquetes `SIG` de código abierto como QGIS y permite a R manejar una gama más amplia de formatos de datos espaciales. Esta función lee datos `OGR` y datos vectoriales, pero solamente permite manejar capas con características geométricas (no mezcla puntos, líneas o polígonos en una sola capa) y a su vez establecerá un sistema de referencia espacial si la capa tiene dichos metadatos.\
+Para leer un archivo `shapefile`, se establecen los siguientes argumentos, como `dsn`, en donde se indica el directorio que contiene los shapes y `layer` que es el nombre explícito de la capa a trabajar y dichas capas deben de ir sin la extensión `.shp`.
+
+A continuación, se lee el archivo .shp que contiene de manera integrada la división de el área geoestadística municipal `agem` y el área geoestadística estatal `agee`.
+
+```{r,results=FALSE,class.source = "fold-show"}
+shape_estados <- readOGR(dsn ="D:/MGN/MGN 2020/MGN 2020/conjunto_de_datos", 
+                             layer = "00ent",
+                              encoding = "UTF-8",
+                               use_iconv = TRUE)
+```
+
+```{r,results=FALSE,class.source = "fold-show"}
+shape_municipios <- readOGR(dsn ="D:/MGN/MGN 2020/MGN 2020/conjunto_de_datos", 
+                             layer = "00mun",
+                              encoding = "UTF-8",
+                               use_iconv = TRUE)
+```
+
+La función `rename()` del paquete `dplyr` permite cambiar el nombre de la columna de la clave geoestadística a nivel estatal dentro de la base de datos del shape.
+
+```{r,class.source = "fold-show"}
+shape_municipios@data <- shape_municipios@data %>%
+                          rename("CVE_GEO" = "CVEGEO")
+```
