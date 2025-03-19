@@ -271,46 +271,61 @@ for(i in 1:3){
 require(gt)
 
 IME_2020 %>% 
-  gt() %>%
-   tab_header(title = "Indicadores sociodemográficos del índice de marginación, 2020",
-               subtitle = "Nivel estatal") %>%
+ gt() %>%
+  tab_header(title = "Indicadores sociodemográficos del índice de marginación, 2020",
+             subtitle = "Nivel estatal") %>%
+   tab_footnote(footnote = "Fuente: Estimaciones del CONAPO") %>%
     fmt_number(columns = names(IME_2020)[4:12], 
-                decimals = 2) %>%
-      fmt_number(columns = names(IME_2020)[c(13, 15)], 
-                 decimals = 3) %>%
-     fmt_integer(columns = "POB_TOT", 
-                  sep_mark = " ") %>%
-      tab_options(heading.title.font.size = 14, 
-                  heading.subtitle.font.size = 12,
-                  table.font.names = "Century Gothic",
-                  table.font.size = 10,
-                  data_row.padding = px(1)) %>%
-       tab_style(style = list(cell_text(align = "left",
+               decimals = 2) %>%
+     fmt_number(columns = names(IME_2020)[c(13, 15)], 
+                decimals = 3) %>%
+      fmt_integer(columns = "POB_TOT", 
+                   sep_mark = " ") %>%
+       tab_options(heading.title.font.size = 14, 
+                   heading.subtitle.font.size = 12,
+                   table.font.names = "Century Gothic",
+                   table.font.size = 10,
+                   data_row.padding = px(1)) %>%
+        tab_style(style = list(cell_text(align = "left",
                                          weight = 'bold')),
                   locations = list(cells_title(groups = c("title")))) %>%
-        tab_style(style = list(cell_text(align = "left")),
+         tab_style(style = list(cell_text(align = "left")),
                    locations = list(cells_title(groups = c("subtitle")))) %>%
-         cols_label(CVE_ENT = md("**CVE_ENT**"),
-                    NOM_ENT = md("**NOM_ENT**"), 
-                    POB_TOT = md("**POB_TOT**"), 
-                    ANALF = md("**ANALF**"),
-                    SBASC = md("**SBASC**"),
-                    OVSDE = md("**OVSDE**"),
-                    OVSEE = md("**OVSEE**"),
-                    OVSAE = md("**OVSAE**"),
-                    VHAC = md("**VHAC**"),
-                    OVPT= md("**OVPT**"),
-                    PL.5000 = md("**PL.5000**"),
-                    PO2SM = md("**PO2SM**"),
-                    IM_2020 = md("**IM_2020**"),
-                    GM_2020 = md("**GM_2020**"),
-                    IMN_2020 = md("**IMN_2020**"),
-                    LUGAR = md("**LUGAR**"))  %>% 
-        cols_width(starts_with("NOM_ENT") ~ px(200),
-                   everything() ~ px(100)) %>%
-          as_raw_html() 
+          cols_label(CVE_ENT = md("**CVE_ENT**"),
+                     NOM_ENT = md("**NOM_ENT**"), 
+                     POB_TOT = md("**POB_TOT**"), 
+                     ANALF = md("**ANALF**"),
+                     SBASC = md("**SBASC**"),
+                     OVSDE = md("**OVSDE**"),
+                     OVSEE = md("**OVSEE**"),
+                     OVSAE = md("**OVSAE**"),
+                     VHAC = md("**VHAC**"),
+                     OVPT= md("**OVPT**"),
+                     PL.5000 = md("**PL.5000**"),
+                     PO2SM = md("**PO2SM**"),
+                     IM_2020 = md("**IM_2020**"),
+                     GM_2020 = md("**GM_2020**"),
+                     IMN_2020 = md("**IMN_2020**"),
+                     LUGAR = md("**LUGAR**"))  %>% 
+           cols_width(starts_with("NOM_ENT") ~ px(200),
+                      everything() ~ px(100)) %>%
+            as_raw_html() 
 ```
 </div>
+
+Vamos a clasificar las regiones por estados. Como todas las bases de datos tienen la misma estructura se genera un loop que permite clasificar a los estados. 
+
+```{r}
+for(i in 1:3){
+  assign(paste0("IME_", tablas[i]), get(paste0("IME_", tablas[i])) %>% 
+                                     mutate(Region = case_when(CVE_ENT %in% c("09", "12", "13", "15", "17", "21", "29") ~ "Centro",
+                                                               CVE_ENT %in% c("05", "10", "19", "24", "28") ~ "Noreste",
+                                                               CVE_ENT %in% c("02", "03", "08", "25", "26") ~ "Noroeste",
+                                                               CVE_ENT %in% c("01", "06", "11", "14", "16", "18", "22", "32") ~ "Occidente",
+                                                               CVE_ENT %in% c("04", "07", "20", "23", "27", "30", "31") ~ "Sureste")))
+}
+```
+
 
 
 ### Shapefile
