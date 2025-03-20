@@ -145,7 +145,9 @@ font_add_google("Montserrat", "montserrat")
 
 ## Objetivo  
 
-El método DP2 se distingue por su propiedad de cardinalidad, que permite realizar análisis cuantitativos precisos y significativos entre diferentes valores del índice. Esta característica es fundamental ya que facilita no solo la comparación directa entre distintas unidades geográficas manteniendo su interpretación, sino que también permite realizar operaciones de agregación como sumas y promedios ponderados. A diferencia de otros métodos como los índices ordinales o el Análisis de Componentes Principales (`ACP`), el `DP2` mantiene la distancia relativa entre unidades, lo que resulta especialmente útil para calcular índices regionales mediante promedios ponderados sin perder su significado interpretativo. 
+El método DP2 se distingue por su propiedad de cardinalidad, que permite realizar análisis cuantitativos precisos y significativos entre diferentes valores del índice. Esta característica es fundamental ya que facilita no solo la comparación directa entre distintas unidades geográficas manteniendo su interpretación, sino que también permite realizar operaciones de agregación como sumas y promedios ponderados. A diferencia de otros métodos como los índices ordinales o el Análisis de Componentes Principales (`ACP`), el `DP2` mantiene la distancia relativa entre unidades, lo que resulta especialmente útil para calcular índices regionales mediante promedios ponderados sin perder su significado interpretativo.   
+
+![](../Output/IME_Regiones.png){width="100%" fig-align="center"}
 
 ## Índice de Marginación    
 
