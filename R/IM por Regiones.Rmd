@@ -468,9 +468,13 @@ ggexport(p, filename = path ,width = 10, height = 10, device = "cairo")
 ```
 
 
-![](../Output/Mapa del IMM2020.png){width="70%" fig-align="center"}
+![](../Output/Mapa del IMM2020.png){width="90%" fig-align="center"}
 
+- El análisis del índice de marginación revela que las entidades con un **nivel muy alto** son Guerrero (10.9), Oaxaca (13.2) y Chiapas (11.9). Estas entidades comprenden una **población total de 13.2 millones de habitantes**, constituyendo el **10.4%** de la población mexicana, con un **promedio de 12.06 unidades** según el índice.
 
+- Las entidades clasificadas con un índice de marginación con un **nivel alto** incluyen Campeche (17.8), Durango (18.4), Hidalgo (18.05), Michoacán (18.28), Nayarit (17.51), Puebla (17.72), Tabasco (18.3), Veracruz (16.4) y Yucatán (17.5). Esta categoría abarca **31.9 millones de habitantes**, representando el **24.7%** de la población nacional en 2020, con un **promedio de 17.78 unidades** en el índice.
+
+- En contraste, las entidades que exhiben un índice de marginación de **nivel muy bajo** comprenden Aguascalientes (22.2), Coahuila (22.5), Ciudad de México (23.14) y Nuevo León (23.44). Este grupo engloba una **población de 19.5 millones de habitantes**, lo que constituye el **15.5%** de la población nacional, alcanzando un **promedio de 22.8 unidades en el índice**.
 
 ### Índice de marginación por región
 
@@ -519,4 +523,38 @@ ggexport(p, filename = path, width = 10, height = 10, device = "cairo")
 ```
 
 
-![](../Output/Mapa del IMM2020 Región.png){width="70%" fig-align="center"}
+![](../Output/Mapa del IMM2020 Región.png){width="90%" fig-align="center"}
+
+- El análisis del índice de marginación regional indica que la **región Centro**, integrada por Hidalgo, Puebla, México, Morelos, Tlaxcala, Guerrero y Ciudad de México, concentra el **33.9% de la población nacional** con un índice promedio de **18.6 unidades**. Es notable destacar que Guerrero presenta el índice más bajo a nivel nacional con 10.9 unidades, mientras que la Ciudad de México, con 23.14 unidades, se posiciona como la segunda entidad con mejor nivel de bienestar en el país. 
+
+- La **región Noreste**, constituida por Durango, Tamaulipas, San Luis Potosí, Coahuila y Nuevo León, alberga el **13.5% de la población nacional** (34.2 millones de habitantes) y registra un índice de **20.82 unidades**.
+
+- La **región Noroeste**, compuesta por Baja California, Baja California Sur, Sonora, Chihuahua y Sinaloa, representa el **11.3% de la población nacional** (14.2 millones de habitantes) con un índice de **20.9 unidades**, posicionándose como la región con menor marginación.
+
+- La **región Occidente**, que comprende Michoacán, Nayarit, Colima, Jalisco, Querétaro, Guanajuato, Zacatecas y Aguascalientes, concentra el **13.5% de la población nacional** (26.6 millones de habitantes) y mantiene un índice de **20.13 unidades**.
+
+- La región Sureste, integrada por Campeche, Tabasco, Veracruz, Yucatán, Quintana Roo, Chiapas y Oaxaca, representa el 20.03% de la población nacional (25.2 millones de habitantes) y registra un índice de **16.5 unidades**.
+
+
+## Referencias
+
+Datos Abiertos de México - Índice de marginación (carencias poblacionales) por localidad, municipio y entidad. (2021). Retrieved February 13, 2022, from <https://datos.gob.mx/busca/dataset/indice-de-marginacion-carencias-poblacionales-por-localidad-municipio-y-entidad>
+
+
+## Librerías
+
+**Librerías que se usaron en el trabajo** 
+
+```{r, collapse=FALSE}
+sesion_info <- devtools::session_info()
+```
+
+```{r, echo = FALSE}
+kable(dplyr::select(tibble::as_tibble(sesion_info$packages %>% dplyr::filter(attached == TRUE)),
+                    c(package, loadedversion, source))) %>%
+   kable_classic(full_width = TRUE, html_font = "montserrat", font_size = 10) 
+```
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img src="https://i.creativecommons.org/l/by/4.0/88x31.png" alt="Creative Commons Licence" style="border-width:0"/></a><br />This work by [**Diana Villasana Ocampo**]{xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName"} is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
+
