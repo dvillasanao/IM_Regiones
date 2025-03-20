@@ -45,9 +45,9 @@ diferentes territorios a partir de factores como:
 
 <div style="display: flex; justify-content: center; gap: 10px;">
 
-<img src="Output/Mapa del IMM2020.png" width="50%" style="margin: 1px;">
+<img src="Output/Mapa del IMM2020.png" width="45%" style="margin: 1px;">
 
-<img src="Output/Mapa del IMM2020 Región.png" width="50%" style="margin: 1px;">
+<img src="Output/Mapa del IMM2020 Región.png" width="45%" style="margin: 1px;">
 
 </div>
 
