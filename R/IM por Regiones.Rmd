@@ -466,6 +466,12 @@ p
 path = "Output/Mapa del IMM2020.pdf"
 ggexport(p, filename = path ,width = 10, height = 10, device = "cairo")
 ```
+
+
+![](../Output/Mapa del IMM2020.png){width="70%" fig-align="center"}
+
+
+
 ### Índice de marginación por región
 
 ```{r, fig.height=8, fig.width=10, eval = FALSE, class.source = "fold-hide"}
@@ -511,3 +517,6 @@ p
 path = "Output/Mapa del IMM2020 Región.pdf"
 ggexport(p, filename = path, width = 10, height = 10, device = "cairo")
 ```
+
+
+![](../Output/Mapa del IMM2020 Región.png){width="70%" fig-align="center"}

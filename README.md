@@ -1,33 +1,48 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# IM_Regiones
+# Índice de Marginación a Nivel Estatal con Agrupación Regional mediante el Método DP2
 
-<!-- badges: start -->
-<!-- badges: end -->
+## 📌 Descripción
 
-The goal of IM_Regiones is to …
+Este repositorio presenta una alternativa al cálculo del **Índice de
+Marginación** a nivel estatal, agrupando los estados en **regiones**
+mediante el **Método de distancias ponderadas al cuadrado $DP_2$**. A
+diferencia de otros métodos, **DP2** permite la agregación y comparación
+directa de valores debido a su **propiedad de cardinalidad**, lo que lo
+hace ideal para análisis a nivel regional.
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+## 🎯 Objetivo
 
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
+El **Método DP2** garantiza que los valores del índice sean
+**comparables y agregables** sin perder su significado. Esto significa
+que se pueden calcular promedios regionales de marginación sin afectar
+la interpretación del índice, a diferencia de otros métodos como el
+**Análisis de Componentes Principales (ACP)**, que generan índices
+normalizados sin interpretación directa.
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date.
+## 📊 Índice de Marginación
 
-You can also embed plots, for example:
+El **Índice de Marginación** mide las condiciones de desigualdad en
+diferentes territorios a partir de factores como:
 
-![](README_files/figure-gfm/pressure-1.png)<!-- -->
+- **Educación** (alfabetización y acceso a educación básica).  
+- **Vivienda** (infraestructura y acceso a servicios básicos).  
+- **Ingresos** (niveles de pobreza y distribución económica).  
+- **Urbanización** (distribución poblacional).
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub.
+## ⚙️ Metodología
+
+- Se utiliza el **Método DP2** para calcular un índice sintético de
+  marginación para cada estado.  
+- Gracias a su **propiedad de cardinalidad**, los valores estatales
+  pueden **agruparse** por regiones sin perder su interpretación.  
+- Se calculan promedios ponderados para obtener el índice de marginación
+  a nivel **regional**.
+
+## 📂 Estructura del Repositorio
+
+    /Bases       # Bases de datos utilizadas  
+    /R    # Código en R para el cálculo del índice  
+    /Output    # Resultados y visualizaciones  
+    README.md   # Descripción del proyecto  
