@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 ## 📌 Descripción  
 Este repositorio presenta una alternativa al cálculo del **Índice de Marginación** a nivel estatal, agrupando los estados en **regiones** mediante el **Método de distancias ponderadas al cuadrado $DP_2$**. A diferencia de otros métodos, **DP2** permite la agregación y comparación directa de valores debido a su **propiedad de cardinalidad**, lo que lo hace ideal para análisis a nivel regional.  
 
+![](Output/IME_Regiones.png){width="80%" fig-align="center"}
+
 ## 🎯 Objetivo  
 El **Método DP2** garantiza que los valores del índice sean **comparables y agregables** sin perder su significado. Esto significa que se pueden calcular promedios regionales de marginación sin afectar la interpretación del índice, a diferencia de otros métodos como el **Análisis de Componentes Principales (ACP)**, que generan índices normalizados sin interpretación directa.  
 

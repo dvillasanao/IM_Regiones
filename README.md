@@ -12,6 +12,9 @@ diferencia de otros métodos, **DP2** permite la agregación y comparación
 directa de valores debido a su **propiedad de cardinalidad**, lo que lo
 hace ideal para análisis a nivel regional.
 
+<img src="Output/IME_Regiones.png" style="width:80.0%"
+data-fig-align="center" />
+
 ## 🎯 Objetivo
 
 El **Método DP2** garantiza que los valores del índice sean
