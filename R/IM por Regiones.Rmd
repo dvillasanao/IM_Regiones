@@ -37,6 +37,9 @@ h2 {
 h3 {
   color: #172984;
 }
+h4 {
+  color: #172984;
+}
 </style>
 ```
 
@@ -125,6 +128,19 @@ library(spdep)    # Índice de Moran
 require(spdplyr)        #Data manipulation verbs for the sptial classes
 require(tidyverse) 
 require(unikn)          # Paleta de colores
+require(ggrepel)
+require(viridisLite)
+
+```
+
+
+
+```{r, echo = FALSE, results=FALSE}
+# Se descargan las fuentes de la google fonts
+require(showtext)
+# activar showtext
+showtext_auto()
+font_add_google("Montserrat", "montserrat")
 ```
 
 ## Objetivo  
@@ -253,7 +269,10 @@ tabla %>%
 ```
 
 
-### Bases de datos 
+### Bases de datos   
+
+
+#### Nivel estatal
 
 ```{r}
 tablas <- c("2010", "2015", "2020") 
@@ -313,7 +332,14 @@ IME_2020 %>%
 ```
 </div>
 
-Vamos a clasificar las regiones por estados. Como todas las bases de datos tienen la misma estructura se genera un loop que permite clasificar a los estados. 
+
+**Agrupación por regiones**  
+
+Se clasifican las regiones por estados. Se itera sobre un conjunto de tres tablas almacenadas en una lista (tablas), que contiene los años de los diferentes índice de marginación. Dado que todas las bases de datos tienen la misma estructura y dimensión se genera un loop que permite clasificar a los estados en la variable `Regiones` y `IM_Region`.  
+
+- `Region`: Se crea con base en la columna `CVE_ENT`, que contiene códigos de entidades federativas (estados de México).  
+
+- `IM_Region`: Contiene el promedio de la columna del índice de marginación, agrupado por la nueva variable `Region`.
 
 ```{r}
 for(i in 1:3){
@@ -322,9 +348,11 @@ for(i in 1:3){
                                                                CVE_ENT %in% c("05", "10", "19", "24", "28") ~ "Noreste",
                                                                CVE_ENT %in% c("02", "03", "08", "25", "26") ~ "Noroeste",
                                                                CVE_ENT %in% c("01", "06", "11", "14", "16", "18", "22", "32") ~ "Occidente",
-                                                               CVE_ENT %in% c("04", "07", "20", "23", "27", "30", "31") ~ "Sureste")))
+                                                               CVE_ENT %in% c("04", "07", "20", "23", "27", "30", "31") ~ "Sureste")) %>% 
+                                      mutate(IM_Region = ave(pull(., 13), Region, FUN = mean)))
 }
 ```
+
 
 
 
@@ -333,7 +361,7 @@ for(i in 1:3){
 La función `readOGR` del paquete `rgdal`, extrae automáticamente la información utilizada por otros paquetes `SIG` de código abierto como QGIS y permite a R manejar una gama más amplia de formatos de datos espaciales. Esta función lee datos `OGR` y datos vectoriales, pero solamente permite manejar capas con características geométricas (no mezcla puntos, líneas o polígonos en una sola capa) y a su vez establecerá un sistema de referencia espacial si la capa tiene dichos metadatos.\
 Para leer un archivo `shapefile`, se establecen los siguientes argumentos, como `dsn`, en donde se indica el directorio que contiene los shapes y `layer` que es el nombre explícito de la capa a trabajar y dichas capas deben de ir sin la extensión `.shp`.
 
-A continuación, se lee el archivo .shp que contiene de manera integrada la división de el área geoestadística municipal `agem` y el área geoestadística estatal `agee`. 
+A continuación, se lee el archivo .shp que contiene de manera integrada la división del área geoestadística estatal `agee`. 
 
 
 **Área geoestadística estatal `agee`**   
@@ -345,18 +373,141 @@ shape_estados <- readOGR(dsn ="D:/MGN/MGN 2020/MGN 2020/conjunto_de_datos",
                                use_iconv = TRUE)
 ```
 
-```{r,results=FALSE,class.source = "fold-show"}
-shape_municipios <- readOGR(dsn ="D:/MGN/MGN 2020/MGN 2020/conjunto_de_datos", 
-                             layer = "00mun",
-                              encoding = "UTF-8",
-                               use_iconv = TRUE)
+
+#### SpatialPolygons
+
+Se fusionan los datos del `shape_estados` con datos estadísticos del índice de marginación a nivel estatal (`IME_2020`), y el índice de marginación agrupado por regiones (`IM_Regiones`). El resultado es `layer_estados`, el cual es un objeto que contiene a los estados junto con sus atributos actualizados, lo que facilita su análisis y visualización en mapas.
+
+#### $$SpatialPolygons \Rightarrow SpatialPolygons + Datos$$
+
+```{r, class.source = "fold-show"}
+layer_estados <- merge(shape_estados,
+                        IME_2020 %>%
+                          mutate(GM_2020 = fct_relevel(.$GM_2020, "Muy alto", "Alto", "Medio", "Bajo", "Muy bajo")),
+                           by = "CVE_ENT")
 ```
 
-La función `rename()` del paquete `dplyr` permite cambiar el nombre de la columna de la clave geoestadística a nivel estatal dentro de la base de datos del shape.
 
-```{r,class.source = "fold-show"}
-shape_municipios@data <- shape_municipios@data %>%
-                          rename("CVE_GEO" = "CVEGEO")
+### Índice de marginación a nivel estatal
+
+```{r, fig.height=8, fig.width=10, eval = FALSE, class.source = "fold-hide"}
+IME_2020 <- IME_2020 %>%  
+             mutate(Entidad = case_when(NOM_ENT %in% "Aguascalientes" ~ "AGS",
+                                        NOM_ENT %in% "Baja California" ~ "BC",
+                                        NOM_ENT %in% "Baja California Sur" ~ "BCS",
+                                        NOM_ENT %in% "Campeche" ~ "CAM",
+                                        NOM_ENT %in% "Coahuila de Zaragoza" ~ "COAH",
+                                        NOM_ENT %in% "Colima" ~ "COL",
+                                        NOM_ENT %in% "Chiapas" ~ "CHIS",
+                                        NOM_ENT %in% "Chihuahua" ~ "CHIH",
+                                        NOM_ENT %in% "Ciudad de México" ~ "CDMX",
+                                        NOM_ENT %in% "Durango" ~ "DGO",
+                                        NOM_ENT %in% "Guanajuato" ~ "GTO",
+                                        NOM_ENT %in% "Guerrero" ~ "GRO",
+                                        NOM_ENT %in% "Hidalgo" ~ "HGO",
+                                        NOM_ENT %in% "Jalisco" ~ "JAL",
+                                        NOM_ENT %in% "México" ~ "MEX",
+                                        NOM_ENT %in% "Michoacán de Ocampo" ~ "MICH",
+                                        NOM_ENT %in% "Morelos" ~ "MOR",
+                                        NOM_ENT %in% "Nayarit" ~ "NAY",
+                                        NOM_ENT %in% "Nuevo León" ~ "NL",
+                                        NOM_ENT %in% "Oaxaca" ~ "OAX",
+                                        NOM_ENT %in% "Puebla" ~ "PUE",
+                                        NOM_ENT %in% "Querétaro de Arteaga" ~ "QRO",
+                                        NOM_ENT %in% "Quintana Roo" ~ "QROO",
+                                        NOM_ENT %in% "San Luis Potosí" ~ "SLP",
+                                        NOM_ENT %in% "Sinaloa" ~ "SIN",
+                                        NOM_ENT %in% "Sonora" ~ "SON",
+                                        NOM_ENT %in% "Tabasco" ~ "TAB",
+                                        NOM_ENT %in% "Tamaulipas" ~ "TAM",
+                                        NOM_ENT %in% "Tlaxcala" ~ "TLAX",
+                                        NOM_ENT %in% "Veracruz de Ignacio de la Llave" ~ "VER",
+                                        NOM_ENT %in% "Yucatán" ~ "YUC",
+                                        NOM_ENT %in% "Zacatecas" ~ "ZAC"))
+
+# "coordinates()" extrae los centroides de los polígonos, en el orden indicado en shape@data
+centroids.df <- as.data.frame(coordinates(shape_estados)) %>%
+                 rename("Longitude" = "V1","Latitude" = "V2") %>% 
+                  cbind(IME_2020)
+
+p <- ggplot() + 
+      layer_spatial(layer_estados, aes(fill = IM_2020), 
+                    color = "dark grey",
+                    size = 0.5) + 
+       geom_label_repel(data = centroids.df, 
+                        aes(label = paste(Entidad, "\n", round(IM_2020, 2)),
+                            x = Longitude,
+                            y = Latitude), 
+                        force = 0.6,
+                        box.padding = 0.25,
+                        min.segment.length = 0.5,
+                        size = 2.5, 
+                        fill = "transparent",
+                        point.padding = 0.5,
+                        segment.size = 0.7,
+                        segment.colour= "dark grey",
+                        label.size = 0,
+                        alpha = 0.8) +
+        theme_bw() + 
+        theme(plot.title = element_text(size = 22, hjust = 0.15, family = "montserrat", face = "bold"),
+              plot.caption = element_text(size = 11, hjust = 0.2, vjust = 1, family = "montserrat"), 
+              legend.key.size = unit(0.5, "cm"),
+              legend.text = element_text(size = 12, family = "montserrat"), 
+              legend.title = element_text(size = 10, hjust = 0.5, family = "montserrat", face = "bold"),
+              legend.position = "right"
+               ) + 
+         scale_fill_viridis_c(option = "A", begin = 0.3, end = 1) +
+          scale_color_manual(values = viridis(32, option = "A", begin = 0.3, end = 1)) +
+           guides(color = guide_legend(override.aes = list(fill = usecol(pal = pal_petrol, n = 5)))) +
+            labs(title = "Índice de marginación a nivel estatal, 2020",
+                 fill = stringr::str_wrap("Índice de marginación", 10), 
+                 caption = expression(paste("Fuentes: Estimaciones del CONAPO con base en el INEGI, Censo de Población y Vivienda 2020")))
+p
+path = "Output/Mapa del IMM2020.pdf"
+ggexport(p, filename = path ,width = 10, height = 10, device = "cairo")
 ```
+### Índice de marginación por región
 
+```{r, fig.height=8, fig.width=10, eval = FALSE, class.source = "fold-hide"}
+# "coordinates()" extrae los centroides de los polígonos, en el orden indicado en shape@data
+centroids.df <- as.data.frame(coordinates(shape_estados)) %>%
+                 rename("Longitude" = "V1","Latitude" = "V2") %>% 
+                  cbind(IME_2020) %>% 
+                   filter(NOM_ENT %in% c("Ciudad de México", "Nuevo León", "Chihuahua", "Jalisco", "Chiapas"))
 
+p <- ggplot() + 
+      layer_spatial(layer_estados, aes(fill = IM_Region), 
+                     color = "dark grey",
+                      size = 0.5) + 
+       geom_label_repel(data = centroids.df, 
+                        aes(label = paste(Region, "\n", round(IM_Region, 2)),
+                            x = Longitude,
+                            y = Latitude), 
+                        force = 0.6,
+                        box.padding = 0.25,
+                        min.segment.length = 0.5,
+                        size = 3.5, 
+                        fill = "transparent",
+                        point.padding = 0.5,
+                        segment.size = 0.7,
+                        segment.colour= "dark grey",
+                        label.size = 0,
+                        alpha = 0.8) +
+        theme_bw() + 
+          theme(plot.title = element_text(size = 22, hjust = 0.15, family = "montserrat", face = "bold"),
+                plot.caption = element_text(size = 11, hjust = 0.2, vjust = 1, family = "montserrat"), 
+                legend.key.size = unit(0.5, "cm"),
+                legend.text = element_text(size = 12, family = "montserrat"), 
+                legend.title = element_text(size = 10, hjust = 0.5, family = "montserrat", face = "bold"),
+                legend.position = "right"
+                 ) + 
+           scale_fill_viridis_c(option = "A", begin = 0.3, end = 1) +
+            scale_color_manual(values = viridis(32, option = "A", begin = 0.3, end = 1)) +
+             guides(color = guide_legend(override.aes = list(fill = usecol(pal = pal_petrol, n = 5)))) +
+              labs(title = "Índice de marginación a nivel regional, 2020",
+                   fill = stringr::str_wrap("Índice de marginación", 10), 
+                   caption = expression(paste("Fuentes: Estimaciones del CONAPO con base en el INEGI, Censo de Población y Vivienda 2020")))
+p
+path = "Output/Mapa del IMM2020 Región.pdf"
+ggexport(p, filename = path, width = 10, height = 10, device = "cairo")
+```

@@ -1915,6 +1915,9 @@ color: #172984;
 h3 {
 color: #172984;
 }
+h4 {
+color: #172984;
+}
 </style>
 <style>
 .nav>li>a {
@@ -2300,6 +2303,8 @@ Zacatecas
 </div>
 <div id="bases-de-datos" class="section level3">
 <h3>Bases de datos</h3>
+<div id="nivel-estatal" class="section level4">
+<h4>Nivel estatal</h4>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>tablas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;2010&quot;</span>, <span class="st">&quot;2015&quot;</span>, <span class="st">&quot;2020&quot;</span>) </span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>){</span>
@@ -2308,7 +2313,7 @@ Zacatecas
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>                          <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">15</span>), as.numeric))) <span class="co"># Convierte las columnas seleccionadas en numéricas</span></span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>}</span></code></pre></div>
 <div style="height:700px;overflow:auto;">
-<div id="vbmjaploit" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="whpbewbucm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: &#39;Century Gothic&#39;; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 10px; font-weight: normal; font-style: normal; background-color: #FFFFFF; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; table-layout: fixed; width: 0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false" width="0" bgcolor="#FFFFFF">
   <colgroup>
@@ -2870,9 +2875,38 @@ Zacatecas
 <td headers="LUGAR" class="gt_row gt_right" style="border-style: none; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">15</td></tr>
   </tbody>
   
-  
+  <tfoot class="gt_footnotes" style="border-style: none; color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF">
+    <tr style="border-style: none;">
+      <td class="gt_footnote" colspan="16" style="border-style: none; margin: 0px; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;"> Fuente: Estimaciones del CONAPO</td>
+    </tr>
+  </tfoot>
 </table>
 </div>
+</div>
+<p><strong>Agrupación por regiones</strong></p>
+<p>Se clasifican las regiones por estados. Se itera sobre un conjunto de
+tres tablas almacenadas en una lista (tablas), que contiene los años de
+los diferentes índice de marginación. Dado que todas las bases de datos
+tienen la misma estructura y dimensión se genera un loop que permite
+clasificar a los estados en la variable <code>Regiones</code> y
+<code>IM_Region</code>.</p>
+<ul>
+<li><p><code>Region</code>: Se crea con base en la columna
+<code>CVE_ENT</code>, que contiene códigos de entidades federativas
+(estados de México).</p></li>
+<li><p><code>IM_Region</code>: Contiene el promedio de la columna del
+índice de marginación, agrupado por la nueva variable
+<code>Region</code>.</p></li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>){</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">assign</span>(<span class="fu">paste0</span>(<span class="st">&quot;IME_&quot;</span>, tablas[i]), <span class="fu">get</span>(<span class="fu">paste0</span>(<span class="st">&quot;IME_&quot;</span>, tablas[i])) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>                                     <span class="fu">mutate</span>(<span class="at">Region =</span> <span class="fu">case_when</span>(CVE_ENT <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;09&quot;</span>, <span class="st">&quot;12&quot;</span>, <span class="st">&quot;13&quot;</span>, <span class="st">&quot;15&quot;</span>, <span class="st">&quot;17&quot;</span>, <span class="st">&quot;21&quot;</span>, <span class="st">&quot;29&quot;</span>) <span class="sc">~</span> <span class="st">&quot;Centro&quot;</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>                                                               CVE_ENT <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;05&quot;</span>, <span class="st">&quot;10&quot;</span>, <span class="st">&quot;19&quot;</span>, <span class="st">&quot;24&quot;</span>, <span class="st">&quot;28&quot;</span>) <span class="sc">~</span> <span class="st">&quot;Noreste&quot;</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>                                                               CVE_ENT <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;02&quot;</span>, <span class="st">&quot;03&quot;</span>, <span class="st">&quot;08&quot;</span>, <span class="st">&quot;25&quot;</span>, <span class="st">&quot;26&quot;</span>) <span class="sc">~</span> <span class="st">&quot;Noroeste&quot;</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>                                                               CVE_ENT <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;01&quot;</span>, <span class="st">&quot;06&quot;</span>, <span class="st">&quot;11&quot;</span>, <span class="st">&quot;14&quot;</span>, <span class="st">&quot;16&quot;</span>, <span class="st">&quot;18&quot;</span>, <span class="st">&quot;22&quot;</span>, <span class="st">&quot;32&quot;</span>) <span class="sc">~</span> <span class="st">&quot;Occidente&quot;</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>                                                               CVE_ENT <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;04&quot;</span>, <span class="st">&quot;07&quot;</span>, <span class="st">&quot;20&quot;</span>, <span class="st">&quot;23&quot;</span>, <span class="st">&quot;27&quot;</span>, <span class="st">&quot;30&quot;</span>, <span class="st">&quot;31&quot;</span>) <span class="sc">~</span> <span class="st">&quot;Sureste&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>                                      <span class="fu">mutate</span>(<span class="at">IM_Region =</span> <span class="fu">ave</span>(<span class="fu">pull</span>(., <span class="dv">13</span>), Region, <span class="at">FUN =</span> mean)))</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
 <div id="shapefile" class="section level3">
@@ -2891,23 +2925,152 @@ directorio que contiene los shapes y <code>layer</code> que es el nombre
 explícito de la capa a trabajar y dichas capas deben de ir sin la
 extensión <code>.shp</code>.</p>
 <p>A continuación, se lee el archivo .shp que contiene de manera
-integrada la división de el área geoestadística municipal
-<code>agem</code> y el área geoestadística estatal
+integrada la división del área geoestadística estatal
 <code>agee</code>.</p>
 <p><strong>Área geoestadística estatal <code>agee</code></strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>shape_estados <span class="ot">&lt;-</span> <span class="fu">readOGR</span>(<span class="at">dsn =</span><span class="st">&quot;D:/MGN/MGN 2020/MGN 2020/conjunto_de_datos&quot;</span>, </span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>                             <span class="at">layer =</span> <span class="st">&quot;00ent&quot;</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>                              <span class="at">encoding =</span> <span class="st">&quot;UTF-8&quot;</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>                               <span class="at">use_iconv =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>shape_municipios <span class="ot">&lt;-</span> <span class="fu">readOGR</span>(<span class="at">dsn =</span><span class="st">&quot;D:/MGN/MGN 2020/MGN 2020/conjunto_de_datos&quot;</span>, </span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                             <span class="at">layer =</span> <span class="st">&quot;00mun&quot;</span>,</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>shape_estados <span class="ot">&lt;-</span> <span class="fu">readOGR</span>(<span class="at">dsn =</span><span class="st">&quot;D:/MGN/MGN 2020/MGN 2020/conjunto_de_datos&quot;</span>, </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                             <span class="at">layer =</span> <span class="st">&quot;00ent&quot;</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                              <span class="at">encoding =</span> <span class="st">&quot;UTF-8&quot;</span>,</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                               <span class="at">use_iconv =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p>La función <code>rename()</code> del paquete <code>dplyr</code>
-permite cambiar el nombre de la columna de la clave geoestadística a
-nivel estatal dentro de la base de datos del shape.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>shape_municipios<span class="sc">@</span>data <span class="ot">&lt;-</span> shape_municipios<span class="sc">@</span>data <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                          <span class="fu">rename</span>(<span class="st">&quot;CVE_GEO&quot;</span> <span class="ot">=</span> <span class="st">&quot;CVEGEO&quot;</span>)</span></code></pre></div>
+<div id="spatialpolygons" class="section level4">
+<h4>SpatialPolygons</h4>
+<p>Se fusionan los datos del <code>shape_estados</code> con datos
+estadísticos del índice de marginación a nivel estatal
+(<code>IME_2020</code>), y el índice de marginación agrupado por
+regiones (<code>IM_Regiones</code>). El resultado es
+<code>layer_estados</code>, el cual es un objeto que contiene a los
+estados junto con sus atributos actualizados, lo que facilita su
+análisis y visualización en mapas.</p>
+</div>
+<div id="spatialpolygons-rightarrow-spatialpolygons-datos" class="section level4">
+<h4><span class="math display">\[SpatialPolygons \Rightarrow
+SpatialPolygons + Datos\]</span></h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>layer_estados <span class="ot">&lt;-</span> <span class="fu">merge</span>(shape_estados,</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                        IME_2020 <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                          <span class="fu">mutate</span>(<span class="at">GM_2020 =</span> <span class="fu">fct_relevel</span>(.<span class="sc">$</span>GM_2020, <span class="st">&quot;Muy alto&quot;</span>, <span class="st">&quot;Alto&quot;</span>, <span class="st">&quot;Medio&quot;</span>, <span class="st">&quot;Bajo&quot;</span>, <span class="st">&quot;Muy bajo&quot;</span>)),</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>                           <span class="at">by =</span> <span class="st">&quot;CVE_ENT&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="índice-de-marginación-a-nivel-estatal" class="section level3">
+<h3>Índice de marginación a nivel estatal</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>IME_2020 <span class="ot">&lt;-</span> IME_2020 <span class="sc">%&gt;%</span>  </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>             <span class="fu">mutate</span>(<span class="at">Entidad =</span> <span class="fu">case_when</span>(NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Aguascalientes&quot;</span> <span class="sc">~</span> <span class="st">&quot;AGS&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Baja California&quot;</span> <span class="sc">~</span> <span class="st">&quot;BC&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Baja California Sur&quot;</span> <span class="sc">~</span> <span class="st">&quot;BCS&quot;</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Campeche&quot;</span> <span class="sc">~</span> <span class="st">&quot;CAM&quot;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Coahuila de Zaragoza&quot;</span> <span class="sc">~</span> <span class="st">&quot;COAH&quot;</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Colima&quot;</span> <span class="sc">~</span> <span class="st">&quot;COL&quot;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Chiapas&quot;</span> <span class="sc">~</span> <span class="st">&quot;CHIS&quot;</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Chihuahua&quot;</span> <span class="sc">~</span> <span class="st">&quot;CHIH&quot;</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Ciudad de México&quot;</span> <span class="sc">~</span> <span class="st">&quot;CDMX&quot;</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Durango&quot;</span> <span class="sc">~</span> <span class="st">&quot;DGO&quot;</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Guanajuato&quot;</span> <span class="sc">~</span> <span class="st">&quot;GTO&quot;</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Guerrero&quot;</span> <span class="sc">~</span> <span class="st">&quot;GRO&quot;</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Hidalgo&quot;</span> <span class="sc">~</span> <span class="st">&quot;HGO&quot;</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Jalisco&quot;</span> <span class="sc">~</span> <span class="st">&quot;JAL&quot;</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;México&quot;</span> <span class="sc">~</span> <span class="st">&quot;MEX&quot;</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Michoacán de Ocampo&quot;</span> <span class="sc">~</span> <span class="st">&quot;MICH&quot;</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Morelos&quot;</span> <span class="sc">~</span> <span class="st">&quot;MOR&quot;</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Nayarit&quot;</span> <span class="sc">~</span> <span class="st">&quot;NAY&quot;</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Nuevo León&quot;</span> <span class="sc">~</span> <span class="st">&quot;NL&quot;</span>,</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Oaxaca&quot;</span> <span class="sc">~</span> <span class="st">&quot;OAX&quot;</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Puebla&quot;</span> <span class="sc">~</span> <span class="st">&quot;PUE&quot;</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Querétaro de Arteaga&quot;</span> <span class="sc">~</span> <span class="st">&quot;QRO&quot;</span>,</span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Quintana Roo&quot;</span> <span class="sc">~</span> <span class="st">&quot;QROO&quot;</span>,</span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;San Luis Potosí&quot;</span> <span class="sc">~</span> <span class="st">&quot;SLP&quot;</span>,</span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Sinaloa&quot;</span> <span class="sc">~</span> <span class="st">&quot;SIN&quot;</span>,</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Sonora&quot;</span> <span class="sc">~</span> <span class="st">&quot;SON&quot;</span>,</span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Tabasco&quot;</span> <span class="sc">~</span> <span class="st">&quot;TAB&quot;</span>,</span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Tamaulipas&quot;</span> <span class="sc">~</span> <span class="st">&quot;TAM&quot;</span>,</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Tlaxcala&quot;</span> <span class="sc">~</span> <span class="st">&quot;TLAX&quot;</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Veracruz de Ignacio de la Llave&quot;</span> <span class="sc">~</span> <span class="st">&quot;VER&quot;</span>,</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Yucatán&quot;</span> <span class="sc">~</span> <span class="st">&quot;YUC&quot;</span>,</span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>                                        NOM_ENT <span class="sc">%in%</span> <span class="st">&quot;Zacatecas&quot;</span> <span class="sc">~</span> <span class="st">&quot;ZAC&quot;</span>))</span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co"># &quot;coordinates()&quot; extrae los centroides de los polígonos, en el orden indicado en shape@data</span></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a>centroids.df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">coordinates</span>(shape_estados)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a>                 <span class="fu">rename</span>(<span class="st">&quot;Longitude&quot;</span> <span class="ot">=</span> <span class="st">&quot;V1&quot;</span>,<span class="st">&quot;Latitude&quot;</span> <span class="ot">=</span> <span class="st">&quot;V2&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a>                  <span class="fu">cbind</span>(IME_2020)</span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a>      <span class="fu">layer_spatial</span>(layer_estados, <span class="fu">aes</span>(<span class="at">fill =</span> IM_2020), </span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a>                    <span class="at">color =</span> <span class="st">&quot;dark grey&quot;</span>,</span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a>                    <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a>       <span class="fu">geom_label_repel</span>(<span class="at">data =</span> centroids.df, </span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a>                        <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste</span>(Entidad, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="fu">round</span>(IM_2020, <span class="dv">2</span>)),</span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a>                            <span class="at">x =</span> Longitude,</span>
+<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a>                            <span class="at">y =</span> Latitude), </span>
+<span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a>                        <span class="at">force =</span> <span class="fl">0.6</span>,</span>
+<span id="cb5-49"><a href="#cb5-49" tabindex="-1"></a>                        <span class="at">box.padding =</span> <span class="fl">0.25</span>,</span>
+<span id="cb5-50"><a href="#cb5-50" tabindex="-1"></a>                        <span class="at">min.segment.length =</span> <span class="fl">0.5</span>,</span>
+<span id="cb5-51"><a href="#cb5-51" tabindex="-1"></a>                        <span class="at">size =</span> <span class="fl">2.5</span>, </span>
+<span id="cb5-52"><a href="#cb5-52" tabindex="-1"></a>                        <span class="at">fill =</span> <span class="st">&quot;transparent&quot;</span>,</span>
+<span id="cb5-53"><a href="#cb5-53" tabindex="-1"></a>                        <span class="at">point.padding =</span> <span class="fl">0.5</span>,</span>
+<span id="cb5-54"><a href="#cb5-54" tabindex="-1"></a>                        <span class="at">segment.size =</span> <span class="fl">0.7</span>,</span>
+<span id="cb5-55"><a href="#cb5-55" tabindex="-1"></a>                        <span class="at">segment.colour=</span> <span class="st">&quot;dark grey&quot;</span>,</span>
+<span id="cb5-56"><a href="#cb5-56" tabindex="-1"></a>                        <span class="at">label.size =</span> <span class="dv">0</span>,</span>
+<span id="cb5-57"><a href="#cb5-57" tabindex="-1"></a>                        <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb5-58"><a href="#cb5-58" tabindex="-1"></a>        <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb5-59"><a href="#cb5-59" tabindex="-1"></a>        <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">22</span>, <span class="at">hjust =</span> <span class="fl">0.15</span>, <span class="at">family =</span> <span class="st">&quot;montserrat&quot;</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb5-60"><a href="#cb5-60" tabindex="-1"></a>              <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="fl">0.2</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="st">&quot;montserrat&quot;</span>), </span>
+<span id="cb5-61"><a href="#cb5-61" tabindex="-1"></a>              <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb5-62"><a href="#cb5-62" tabindex="-1"></a>              <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">family =</span> <span class="st">&quot;montserrat&quot;</span>), </span>
+<span id="cb5-63"><a href="#cb5-63" tabindex="-1"></a>              <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">family =</span> <span class="st">&quot;montserrat&quot;</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb5-64"><a href="#cb5-64" tabindex="-1"></a>              <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span></span>
+<span id="cb5-65"><a href="#cb5-65" tabindex="-1"></a>               ) <span class="sc">+</span> </span>
+<span id="cb5-66"><a href="#cb5-66" tabindex="-1"></a>         <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">&quot;A&quot;</span>, <span class="at">begin =</span> <span class="fl">0.3</span>, <span class="at">end =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-67"><a href="#cb5-67" tabindex="-1"></a>          <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">viridis</span>(<span class="dv">32</span>, <span class="at">option =</span> <span class="st">&quot;A&quot;</span>, <span class="at">begin =</span> <span class="fl">0.3</span>, <span class="at">end =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb5-68"><a href="#cb5-68" tabindex="-1"></a>           <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">fill =</span> <span class="fu">usecol</span>(<span class="at">pal =</span> pal_petrol, <span class="at">n =</span> <span class="dv">5</span>)))) <span class="sc">+</span></span>
+<span id="cb5-69"><a href="#cb5-69" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Índice de marginación a nivel estatal, 2020&quot;</span>,</span>
+<span id="cb5-70"><a href="#cb5-70" tabindex="-1"></a>                 <span class="at">fill =</span> stringr<span class="sc">::</span><span class="fu">str_wrap</span>(<span class="st">&quot;Índice de marginación&quot;</span>, <span class="dv">10</span>), </span>
+<span id="cb5-71"><a href="#cb5-71" tabindex="-1"></a>                 <span class="at">caption =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Fuentes: Estimaciones del CONAPO con base en el INEGI, Censo de Población y Vivienda 2020&quot;</span>)))</span>
+<span id="cb5-72"><a href="#cb5-72" tabindex="-1"></a>p</span>
+<span id="cb5-73"><a href="#cb5-73" tabindex="-1"></a>path <span class="ot">=</span> <span class="st">&quot;Output/Mapa del IMM2020.pdf&quot;</span></span>
+<span id="cb5-74"><a href="#cb5-74" tabindex="-1"></a><span class="fu">ggexport</span>(p, <span class="at">filename =</span> path ,<span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">10</span>, <span class="at">device =</span> <span class="st">&quot;cairo&quot;</span>)</span></code></pre></div>
+</div>
+<div id="índice-de-marginación-por-región" class="section level3">
+<h3>Índice de marginación por región</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># &quot;coordinates()&quot; extrae los centroides de los polígonos, en el orden indicado en shape@data</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>centroids.df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">coordinates</span>(shape_estados)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                 <span class="fu">rename</span>(<span class="st">&quot;Longitude&quot;</span> <span class="ot">=</span> <span class="st">&quot;V1&quot;</span>,<span class="st">&quot;Latitude&quot;</span> <span class="ot">=</span> <span class="st">&quot;V2&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>                  <span class="fu">cbind</span>(IME_2020) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>                   <span class="fu">filter</span>(NOM_ENT <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Ciudad de México&quot;</span>, <span class="st">&quot;Nuevo León&quot;</span>, <span class="st">&quot;Chihuahua&quot;</span>, <span class="st">&quot;Jalisco&quot;</span>, <span class="st">&quot;Chiapas&quot;</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>      <span class="fu">layer_spatial</span>(layer_estados, <span class="fu">aes</span>(<span class="at">fill =</span> IM_Region), </span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>                     <span class="at">color =</span> <span class="st">&quot;dark grey&quot;</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>                      <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>       <span class="fu">geom_label_repel</span>(<span class="at">data =</span> centroids.df, </span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>                        <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste</span>(Region, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="fu">round</span>(IM_Region, <span class="dv">2</span>)),</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>                            <span class="at">x =</span> Longitude,</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>                            <span class="at">y =</span> Latitude), </span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>                        <span class="at">force =</span> <span class="fl">0.6</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>                        <span class="at">box.padding =</span> <span class="fl">0.25</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>                        <span class="at">min.segment.length =</span> <span class="fl">0.5</span>,</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>                        <span class="at">size =</span> <span class="fl">3.5</span>, </span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>                        <span class="at">fill =</span> <span class="st">&quot;transparent&quot;</span>,</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>                        <span class="at">point.padding =</span> <span class="fl">0.5</span>,</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>                        <span class="at">segment.size =</span> <span class="fl">0.7</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>                        <span class="at">segment.colour=</span> <span class="st">&quot;dark grey&quot;</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>                        <span class="at">label.size =</span> <span class="dv">0</span>,</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>                        <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>        <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>          <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">22</span>, <span class="at">hjust =</span> <span class="fl">0.15</span>, <span class="at">family =</span> <span class="st">&quot;montserrat&quot;</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>                <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="fl">0.2</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="st">&quot;montserrat&quot;</span>), </span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>                <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>                <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">family =</span> <span class="st">&quot;montserrat&quot;</span>), </span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>                <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">family =</span> <span class="st">&quot;montserrat&quot;</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>                <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>                 ) <span class="sc">+</span> </span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>           <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">&quot;A&quot;</span>, <span class="at">begin =</span> <span class="fl">0.3</span>, <span class="at">end =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>            <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">viridis</span>(<span class="dv">32</span>, <span class="at">option =</span> <span class="st">&quot;A&quot;</span>, <span class="at">begin =</span> <span class="fl">0.3</span>, <span class="at">end =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>             <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">fill =</span> <span class="fu">usecol</span>(<span class="at">pal =</span> pal_petrol, <span class="at">n =</span> <span class="dv">5</span>)))) <span class="sc">+</span></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a>              <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Índice de marginación a nivel regional, 2020&quot;</span>,</span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>                   <span class="at">fill =</span> stringr<span class="sc">::</span><span class="fu">str_wrap</span>(<span class="st">&quot;Índice de marginación&quot;</span>, <span class="dv">10</span>), </span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>                   <span class="at">caption =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Fuentes: Estimaciones del CONAPO con base en el INEGI, Censo de Población y Vivienda 2020&quot;</span>)))</span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a>p</span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a>path <span class="ot">=</span> <span class="st">&quot;Output/Mapa del IMM2020 Región.pdf&quot;</span></span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a><span class="fu">ggexport</span>(p, <span class="at">filename =</span> path, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">10</span>, <span class="at">device =</span> <span class="st">&quot;cairo&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 
