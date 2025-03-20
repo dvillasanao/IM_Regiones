@@ -43,9 +43,33 @@ diferentes territorios a partir de factores como:
 - Se calculan promedios ponderados para obtener el índice de marginación
   a nivel **regional**.
 
+<div style="display: flex; justify-content: center; gap: 10px;">
+
+<img src="Output/Mapa del IMM2020.png" width="50%" style="margin: 1px;">
+
+<img src="Output/Mapa del IMM2020 Región.png" width="50%" style="margin: 1px;">
+
+</div>
+
 ## 📂 Estructura del Repositorio
 
     /Bases       # Bases de datos utilizadas  
     /R    # Código en R para el cálculo del índice  
     /Output    # Resultados y visualizaciones  
     README.md   # Descripción del proyecto  
+
+## Resultados
+
+**Enlace**:
+<https://dvillasanao.github.io/IM_Regiones/Output/IM-por-Regiones.html>
+
+## Código de Conducta
+
+Por favor, revisa el [Código de Conducta](CODE_OF_CONDUCT.md) antes de
+contribuir.
+
+## Licencia
+
+Este trabajo de Diana Villasana Ocampo está bajo una
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+Licencia Creative Commons Atribución 4.0 Internacional.</a>.
